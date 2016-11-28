@@ -475,8 +475,8 @@ void *TrainModelThread(void *id) {
         // compute the gradients of neurons
         for (c = 0; c < layer1_size; c++){
           neu1_grad[c] += g1 * syn1neg[c + l2];
-          neuchar_grad[c] += g2 * synchar[c + l2];
-          neucomp_grad[c] += g3 * syncomp[c + l2];
+          neuchar_grad[c] += g2 * syn1neg[c + l2];
+          neucomp_grad[c] += g3 * syn1neg[c + l2];
         }
         //update syn1neg
         for(c = 0; c < layer1_size; c++)
