@@ -160,6 +160,11 @@ int AddWordToVocab(char *word) {
   return vocab_size - 1;
 }
 
+// Used later for sorting by word counts
+int VocabCompare(const void *a, const void *b) {
+    return ((struct vocab_word *)b)->cn - ((struct vocab_word *)a)->cn;
+}
+
 void DestroyVocab(){
 	int a;
 	for (a = 0; a < vocab_size; a++){
@@ -181,6 +186,38 @@ void DestroyVocab(){
 	free(comp_array);
 }
 
+// Sorts the vocabulary by frequency using word counts
+void SortVocab() {
+  int a, size;
+  unsigned int hash;
+  // Sort the vocabulary and keep </s> at the first position
+  qsort(&vocab[1], vocab_size - 1, sizeof(struct vocab_word), VocabCompare);
+  for (a = 0; a < vocab_hash_size; a++) vocab_hash[a] = -1;
+  size = vocab_size;
+  train_words = 0;
+  for (a = 1; a < size; a++) { // Skip </s>
+    // Words occuring less than min_count times will be discarded from the vocab
+    if (vocab[a].cn < min_count) {
+      vocab_size--;
+      if (vocab[a].character != NULL) free(vocab[a].character);
+      free(vocab[a].word);
+      vocab[a].word = NULL;
+    } else {
+      // Hash will be re-computed, as after the sorting it is not actual
+      hash=GetWordHash(vocab[a].word);
+      while (vocab_hash[hash] != -1) hash = (hash + 1) % vocab_hash_size;
+      vocab_hash[hash] = a;
+      train_words += vocab[a].cn;
+    }
+  }
+  vocab = (struct vocab_word *)realloc(vocab, (vocab_size + 1) * sizeof(struct vocab_word));
+  // Allocate memory for the binary tree construction
+  /*
+  for (a = 0; a < vocab_size; a++) {
+    vocab[a].code = (char *)calloc(MAX_CODE_LENGTH, sizeof(char));
+    vocab[a].point = (int *)calloc(MAX_CODE_LENGTH, sizeof(int));
+  }*/
+}
 // Reduces the vocabulary by removing infrequent tokens
 void ReduceVocab() {
   int a, b = 0;
@@ -231,7 +268,7 @@ void LearnVocabFromTrainFile() {
     } else vocab[i].cn++;
     if (vocab_size > vocab_hash_size * 0.7) ReduceVocab();
   }
-  //SortVocab();
+  SortVocab();
   if (debug_mode > 0) {
     printf("Vocab size: %lld\n", vocab_size);
     printf("Words in train file: %lld\n", train_words);
