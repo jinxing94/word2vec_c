@@ -1,0 +1,1 @@
+./subword2vec -size 200 -train zh_wiki_01_segment_post -output zh_wiki_01_vec.txt -binary 0 -comp comp.txt -char2comp char2comp.txt -window 5 -sample 1e-3 -negative 10 -threads 12 -min-count 5 -join-type 1
