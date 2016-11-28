@@ -5,7 +5,7 @@ else
 	CFLAGS += -pthread -lm
 endif
 
-CFLAGS += -Ofast -std=c99
+CFLAGS += -O2 -std=c99
 
 all: subword2vec.c
 	${CC} subword2vec.c ${CFLAGS} -o subword2vec
