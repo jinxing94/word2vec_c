@@ -522,7 +522,7 @@ void *TrainModelThread(void *id) {
       else if(join_type == 2){ // sum context composition model  ->  change to average loss
         real f = 0, g = 0;
         for (c = 0; c < layer1_size; c++)
-          f += (neu1[c] / (2 * d)+ neuchar[c] / char_list_cnt + neucomp[c] / comp_list_cnt) * syn1neg[c + l2] / 3;
+          f += (neu1[c] / (2 * (window - b))+ neuchar[c] / char_list_cnt + neucomp[c] / comp_list_cnt) * syn1neg[c + l2] / 3;
         if (f > MAX_EXP) 
           g = (label - 1) * alpha;
         else if (f < -MAX_EXP)
@@ -530,12 +530,12 @@ void *TrainModelThread(void *id) {
         else
           g = (label - expTable[(int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;
         for (c = 0; c < layer1_size; c++){
-          neu1_grad[c] += g * syn1neg[c + l2] / 3 / (2 * d);
+          neu1_grad[c] += g * syn1neg[c + l2] / 3 / (2 * (window - b));
           neuchar_grad[c] += g * syn1neg[c + l2] / 3 / char_list_cnt;
           neucomp_grad[c] += g * syn1neg[c + l2] / 3 / comp_list_cnt;
         }
         for (c = 0; c < layer1_size; c++)
-        syn1neg[c + l2] += g * (neu1[c] / (2 * d)+ neuchar[c] / char_list_cnt + neucomp[c] / comp_list_cnt) / 3;
+        syn1neg[c + l2] += g * (neu1[c] / (2 * (window - b))+ neuchar[c] / char_list_cnt + neucomp[c] / comp_list_cnt) / 3;
       }
     }
     // back propagate   hidden -> input
