@@ -1,0 +1,1 @@
+./subword2vec3 -size 200 -train zh_wiki_segment_post -output zh_wiki_vec8.txt -binary 0 -comp radical_wubi/radical.txt -char2comp radical_wubi/char2radical.txt -window 5 -sample 1e-3 -negative 10 -threads 20 -min-count 5 -join-type 2
