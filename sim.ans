@@ -1,0 +1,50 @@
+./cwe -train zh_wiki_segment_post -output-word zh_wiki_cwe -output-char chr_cwe.txt -size 200 -window 5 -sample 1e-3 -negative 10 -hs 0 -iter 1 -threads 20
+../bin/word2vec -train ../data/zh_wiki_segment_post -output ../data/zh_wiki_bin -cbow 1 -size 200 -negative 5 -window 5 -hs 0 -sample 1e-3 -threads 20 -min-count 5 -binary 0
+====240==========================baseline==========================================
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) word2vec
+SpearmanrResult(correlation=0.50886720176506595, pvalue=1.1003779503090538e-16)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) cwe 
+SpearmanrResult(correlation=0.49217698915444597, pvalue=1.4759540325281471e-15
+============================== test ============================================
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 1component content
+SpearmanrResult(correlation=0.55447805025424979, pvalue=4.2147831233799582e-20)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 2component jion2 -
+SpearmanrResult(correlation=0.21286520232819031, pvalue=0.0011054259100417971)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 3radical content
+SpearmanrResult(correlation=0.54374255260262561, pvalue=2.9930642652808694e-19)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 4radical jion2 -
+SpearmanrResult(correlation=0.23823713178549988, pvalue=0.00025026638597218782)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 5radical target
+SpearmanrResult(correlation=0.54704811136658082, pvalue=1.6490264703750758e-19)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 6component target
+SpearmanrResult(correlation=0.55620218818782596, pvalue=3.05613791689549e-20)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 7component jion2
+SpearmanrResult(correlation=0.21404730358699675, pvalue=0.0010352473428590311)
+(232, ' word pairs appered in the training dictionary , total word pairs ', 240) 8radical jion2
+SpearmanrResult(correlation=0.21778870212401594, pvalue=0.00083923997367203556)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297) 9 radical jion2-v2
+SpearmanrResult(correlation=0.31073706651622868, pvalue=8.0755333880459635e-08)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297) 10 comp jion2-v2
+SpearmanrResult(correlation=0.30799793787015745, pvalue=1.0625584941340764e-07)
+====297=========================baseline============================================
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297) word2vec
+SpearmanrResult(correlation=0.61872283115266469, pvalue=1.3172709881051073e-31)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297) cwe
+SpearmanrResult(correlation=0.58795118548955982, pvalue=5.5502786663529034e-28)
+==============================test===============================================
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297)
+SpearmanrResult(correlation=0.57704648514598911, pvalue=8.6730128804615001e-27)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297)
+SpearmanrResult(correlation=0.34579032953145311, pvalue=1.8712924322515698e-09)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297)
+SpearmanrResult(correlation=0.64750235965372771, pvalue=2.2236138619478165e-35)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297)
+SpearmanrResult(correlation=0.34404790194440749, pvalue=2.2822176927405687e-09)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297)
+SpearmanrResult(correlation=0.630963008239394, pvalue=3.6611543671671928e-33)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297)
+SpearmanrResult(correlation=0.65617844502565104, pvalue=1.344012535350301e-36)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297) 7component jion2
+SpearmanrResult(correlation=0.27584270001637651, pvalue=2.1721660522876086e-06)
+(286, ' word pairs appered in the training dictionary , total word pairs ', 297) 8radical jion2
+SpearmanrResult(correlation=0.27841343729065282, pvalue=1.7297834857076582e-06)
