@@ -1,0 +1,42 @@
+%!TEX root = acl2014.tex
+\section{Joint Learning Model}
+In this section, we introduces our joint leraning model, which combine word, character, sub character component information. Our model is based on CBOW model, we compare t effectiveness of two sub character features:
+radical, component and two methods that combines word, character, sub character vectors in the context: JOIN1 and JOIN2. JOIN1 borrows the idea of  BEING (Fei Sun et al. 2016) and uses the sum of word vectors, the sum of character vectors, the sum of sub characters to predict te target word seperately and sum these three predict loss as the final loss function. JOIN2 follows the idea of CWE(Chen et al.) and represents the word  in the context as the composition of word embeddings , its characters embeddings and its sub character embeddings. Observing that in multi-granularity embedding (MGE) model(Yin et al. 2016), the radicals of the target word are used in the context to predict the target word, we also compare the performance of combining the surrounding words'sub character information and combining the target word's sub character information in our model.
+
+Let $D = (w_1, w_2, \cdots, w_n)$ be the training corpus, $C = (c_1,c_2, \cdot, c_m)$ be the set of characters, $S= (s1,s_2,\cdots, s_n)$ be the set of sub characters, K be the window size. \\
+\textbf{JOIN1} \quad For JOIN2 combining method, we aim to maximize the sum of three predictive loss for a target word $w_i$:
+\begin{equation*}
+L(w_i) = \log P(w_i | h_{i1}) + \log P(w_i | h_{i2}) + \log P(w_i | h_{i3})
+\end{equation*}
+where $h_{i1}, h_{i2}, h{i3}$ is the composition of context word embeddings, context character embeddings, context sub character embeddings resprectively. More precisely, we denote the surrounding words, characters, sub characters as the context , they can be represented as following:
+\begin{equation*}
+h_{i1} = \sum_{w_j \in context} w_j
+\end{equation*}
+\begin{equation*}
+h_{i2} = \sum_{c_j \in context} c_j
+\end{equation*}
+\begin{equation*}
+h_{i3} = \sum_{s_k \in context} s_k
+\end{equation*}
+The conditionaly probability is defined by the soft max function
+\begin{equation*}
+p(w_i |h_{i_k}) = \frac{\exp(h_i^T w_{i_k})}{\sum_{j = 1}^n \exp(h_{i_k}^T w_j)} \text{for k = 1, 2, 3}
+\end{equation*}
+The model aims to maximize the overall log likelihood :
+\begin{equation*}
+L(D) = \sum_{i = 1}^N L(w_i)
+\end{equation*}
+\textbf{JOIN2} \quad For JOIN2 combining method, the training objective is to maximize the following overall log likelihood:
+
+\begin{equation*}
+L(D) = \sum_{w_i \in D} \log p(w_i | h_i)
+\end{equation*}
+where $h_i$ is the vector composed by the embedding of context words, characters, and sub characters.
+\begin{equation*}
+h_i = \sum_{t = i - K, t \neq i}^{i+K} \frac{1}{2K}(w_t + \sum_{c_j \in w_t} \frac{1}{|w_t|} (c_j + \sum_{s_k \in c_j} \frac{1}{|c_j|}s_k))
+\end{equation*}
+$|w_i|$ represents the number of characters in word $w_i$ and $|c_j|$ represents the number of sub characters in charater $c_j$. \\
+The conditional probability is defined as
+\begin{equation*}
+p(w_i |h_i) = \frac{\exp(h_i^T w_i)}{\sum_{j = 1}^n \exp(h_i^T w_j)}
+\end{equation*}
