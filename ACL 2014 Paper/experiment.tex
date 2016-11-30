@@ -8,7 +8,7 @@
 
 \textbf{Parameter Settings} We fix the word vector length to be 200, the window size to be 5, and the training iteration to be 1. Words with frequency less than 5 are ignored because they are too rare. The negative sampling size is set to be 10 and the subsampling parameter is set to be $10^{-3}$.
 
-\textbf{Baseline} We use the CBOW model in work \textbf{CWE} as the baseline model. All the parameters are set to be the same as those in our model.
+\textbf{Baseline} We use the CBOW model in work \textbf{[1]} as the baseline model. All the parameters are set to be the same as those in our model.
 
 \textbf{Similarity Evaluation Metrics} In this part, we evaluate the quality of an embedding by a ranking-correlation method. For all 3-tuples $(w_1, w_2, s)$ in a similarity testing dataset, we can calculate the similarity $s'$ between $w_1$ and $w_2$ with an embedding, then we calculate the Spearsman Correlation between all the $s$ and $s'$ as the quality of this embedding.
 
