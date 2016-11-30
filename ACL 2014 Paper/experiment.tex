@@ -7,7 +7,7 @@
 
 \textbf{Testing Datasets} We found three datasets from work \textbf{???} which can be used to test Chinese word embeddings. The first one is for analogy testing, which consists of 1124 tuples of words and each tuple contains 4 words, coming from three different categories `Capital', `State' and `Family'. The words $w_i$ in each tuple $(w_1, w_2, w_3, w_4)$ in this dataset have the relationship that $w_2$ is to $w_1$ as $w_4$ is to $w_3$. The rest two are for similarity testing, both of which consist of 3-tuples $(w_1, w_2, s)$ where s is a real number representing the similarity between $w_1$ and $w_2$.
 
-\textbf{Parameter Settings} We fix the word vector length to be 200, the window size to be 5, and the training iteration to be 1. Words with frequency less than 5 are ignored because they are too rare.
+\textbf{Parameter Settings} We fix the word vector length to be 200, the window size to be 5, and the training iteration to be 1. Words with frequency less than 5 are ignored because they are too rare. The negative sampling size is set to be 10 and the subsampling parameter is set to be $10^{-3}$.
 
 \textbf{Baseline} We use the CBOW model in work \textbf{???} as the baseline model. All the parameters are set to be the same as those in our model.
 
