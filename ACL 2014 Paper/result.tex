@@ -1,12 +1,9 @@
 %!TEX root = acl2014.tex
+\usepackage{amsmath}
 \section{Results}
-\subsection{Implementation details}
-For all experiments, for both our model and the baselines, we use the following parameters. we use vectors of dimension 200 and sample 10 negatives. The window size is set to 10, and the rejection threshold is 10−3. We only keep the words appearing no less that 5 times. The learning rate is set to ? for both our model and the CBOW, CWE-P baseline. Our model is implemented in C++.
-Using this setting on training data, our model with character and radicals/components is approximately 2× slower to train than the CBOW baseline (12k words/second/thread versus 20k words/second/thread for the baseline). 
-
 \subsection{Human similarity judgement} 
-In this task, we use two different chinese similarity datasets, wordsim-240 and wordsim-296, which are proposed py Xinxiong Chen e tal. In order to evaluate the semantic relateness of word emmbeddings given by each model, we cacluate Spearman’s rank correlation coeffi-cient (Spearman, 1904) between human judgement similarity and the cosine similarity of the vector representations.These correlations are reported as the model performance. 
-In wordsim-240, there are 240 pairs of Chinese words and human-labeled relatedness scores, of which the 233 word pairs have appeared in the learning corpus. In wordsim-296, the words in 280 word pairs have appeared in the learning corpus and the left 16 pairs have new words.
+In this task, we use two different chinese similarity datasets, wordsim-240 and wordsim-296, which are proposed py Xinxiong Chen e tal. 
+In wordsim-240, there are 240 pairs of Chinese words and human-labeled relatedness scores, of which the 233 word pairs have appeared in the learning corpus. In wordsim-297, the words in 280 word pairs have appeared in the learning corpus and the left 16 pairs have new words.
 We compute the Spearman correlation ρ between relatedness scores from a model and the human judgements for comparison. The evaluation results of our model and baseline methods on wordsim-240 and wordsim-296 are shown in Table 1
 \begin{table}[h]
 \begin{center}
@@ -26,9 +23,10 @@ t-radi-j2 & 21.77 & 27.84\\
 \end{center}
 \caption{\label{font-table} Similarity results }
 \end{table}
+From the results, we observe that: (1) Our models with jion type 1 compute the semantic relatedness of these word pairs much closer to human judgements. (2) The models use information of componant outperform the models using radicals. The reason is that, these components may contains more semantic information about the character. (3) The information of the character and components/radicals of the target word is more useful than those of the context. This can be explained that the influnce of the components mainly stays in the character level, will not influence the meaning of the surrounding words. The change of datasets does not cause significant change of correlations for both baselines and our methods.Our models compute the semantic relatedness of these word pairs much closer to human judgements.
 
 \subsection{Analogical Reasoning}
-This task is to solve the problem like form A is to B as C is to D, where D must be given by the models. We use the Chinese dataset introduced by Xinxiong Chen e tal. which consists of 3 analogy types: (1) capitals of countries (687 groups); (2) states/provinces of cities (175 groups); and (3) family words (240 groups). The learning corpus covers more than 97\% of all the testing words. 
+In this task, we use the Chinese dataset introduced by Xinxiong Chen e tal. which consists of 1124 tuples of words and each tuple contains 4 words, coming from three different categories `Capital', `State' and `Family'. The words $w_i$ in each tuple $(w_1, w_2, w_3, w_4)$ in this dataset have the relationship that $w_2$ is to $w_1$ as $w_4$ is to $w_3$. The learning corpus covers more than 97\% of all the testing words. 
 \begin{table}[h]
 \begin{center}
 \begin{tabular}{lcccc}
@@ -47,4 +45,5 @@ t-radi-j2 & 16.90 & 16.94 & 22.29 & 13.97 \\
 \end{center}
 \caption{\label{font-table} Analogical results }
 \end{table}
+From Table 2, we observe that: (1) Our models with jion type 1 and components information of the character in target word significantly outperform baseline methods. This indicates the necessity of considering character and components embeddings for word embeddings. However, it's also very important to consider the way to combine the information (2) This models can improve the embedding quality of all words, not only those words whose characters are considered for learning. For example, in the type of capitals of countries, all the words are entity names whose characters are not used for learning. Our model can still make an improvement on this type as compared to baseline models. (3) However, we also observe that the component of characters in surounding words may confuse the model, and lead to a bad result. And we think this is highly related to the origin construction of chinese characters and chinese words, that is components can have only local influnce, while characters may influnce the meaning of the surrounding words.
 \footnotetext[1]{c=context,t=target,comp=component,rad=radical}
