@@ -1,15 +1,16 @@
 %!TEX root = acl2014.tex
-\section{Experiment Setup}
 
+\section{Experiment Setup}
+\usepackage{amsmath}
 \textbf{Training Data} We use the Chinese Wikipedia as our training data source. In Chinese sentences, words are not separated by special symbols (as space in English sentences), so we firstly use THULAC\footnote{http://thulac.thunlp.org/} as the lexical analysis tool to separate words in sentences, then we can use this formated corpus in our experiments.
 
 \textbf{Character Components} We crawled the component and radical information of Chinese characters from HTTPCN\footnote{http://tool.httpcn.com/}. This dataset contains 20879 characters, 13253 components and 218 radicals, of which 7744 characters have more than one components, and 214 characters are equal to their radicals.
 
-\textbf{Testing Datasets} We found three datasets from work \textbf{???} which can be used to test Chinese word embeddings. The first one is for analogy testing, which consists of 1124 tuples of words and each tuple contains 4 words, coming from three different categories `Capital', `State' and `Family'. The words $w_i$ in each tuple $(w_1, w_2, w_3, w_4)$ in this dataset have the relationship that $w_2$ is to $w_1$ as $w_4$ is to $w_3$. The rest two are for similarity testing, both of which consist of 3-tuples $(w_1, w_2, s)$ where s is a real number representing the similarity between $w_1$ and $w_2$.
-
 \textbf{Parameter Settings} We fix the word vector length to be 200, the window size to be 5, and the training iteration to be 1. Words with frequency less than 5 are ignored because they are too rare. The negative sampling size is set to be 10 and the subsampling parameter is set to be $10^{-3}$.
 
-\textbf{Baseline} We use the CBOW model in work \textbf{???} as the baseline model. All the parameters are set to be the same as those in our model.
+\textbf{Baseline} We use the CBOW model in work \textbf{CWE} as the baseline model. All the parameters are set to be the same as those in our model.
+
+\textbf{Similarity Evaluation Metrics} In this part, we evaluate the quality of an embedding by a ranking-correlation method. For all 3-tuples $(w_1, w_2, s)$ in a similarity testing dataset, we can calculate the similarity $s'$ between $w_1$ and $w_2$ with an embedding, then we calculate the Spearsman Correlation between all the $s$ and $s'$ as the quality of this embedding.
 
 \textbf{Analogy Evaluation Metrics} In the analogy testing dataset, let $(w_1, w_2, w_3, w_4)$ be a tuple, then with a `good' word embedding $e_i$ of each word $w_i$, we can write down this form
 \begin{align*}
@@ -18,5 +19,3 @@
 	\Rightarrow & (e_2 - e_1 + e_3)\cdot e^{(\ell)} \approx e_4\cdot e^{(\ell)}.
 \end{align*}
 This form shows $(e_2 - e_1 + e_3)\cdot e^{(\ell)}$ is an approximation of $e_4\cdot e^{(\ell)}$, which is the similarity between $e_4$ and $e^{(\ell)}$. If we calculate $(e_2 - e_1 + e_3)\cdot e^{(\ell)}$ for each $w^{(\ell)}$, we are expected to get the maximum result when $w^{(\ell)}=w_4$. In our experiments, with a word embedding and a tuple, we pick the word with maximum approximate similarity (except for the first three words in this tuple) as the prediction of the fourth word, then the prediction precision over all tuples are used as the measurement of the quality of this embedding.
-
-\textbf{Similarity Evaluation Metrics} In this part, we evaluate the quality of an embedding by a ranking-correlation method. For all 3-tuples $(w_1, w_2, s)$ in a similarity testing dataset, we can calculate the similarity $s'$ between $w_1$ and $w_2$ with an embedding, then we calculate the Spearsman Correlation between all the $s$ and $s'$ as the quality of this embedding.
