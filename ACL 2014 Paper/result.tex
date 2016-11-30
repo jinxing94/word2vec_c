@@ -10,17 +10,17 @@ In wordsim-240, there are 240 pairs of Chinese words and human-labeled relatedne
 We compute the Spearman correlation ρ between relatedness scores from a model and the human judgements for comparison. The evaluation results of our model and baseline methods on wordsim-240 and wordsim-296 are shown in Table 1
 \begin{table}[h]
 \begin{center}
-\begin{tabular}{lrr}
-\hline \bf model-type & \bf wordsim-240, & \bf wordsim-297, \\ \hline
+\begin{tabular}{lcc}
+\hline \bf model & \bf wordsim-240 & \bf wordsim-297 \\ \hline
 cbow & 50.88 & 61.87 \\
-context-component-jion1 & 55.44 & 57.70\\
-context-component-jion2 & 21.28 & 34.57 \\
-context-radical-jion1 & 54.37 & 64.75 \\
-context-radical-jion2 text & 23.82  & 34.40\\
-target-radical-jion1  & 54.70 & 63.09\\
-target-component-jion1  & 55.62 & 65.61\\
-target-component-jion2 & 21.40 & 27.58\\
-target-radical-jion2 & 21.77 & 27.84\\
+c-comp-j1 & 55.44 & 57.70\\
+c-comp-j2 & 21.28 & 34.57 \\
+c-radical-j1 & 54.37 & 64.75 \\
+c-radical-j2 & 23.82  & 34.40\\
+t-radical-j1  & 54.70 & 63.09\\
+t-comp-j1  & 55.62 & 65.61\\
+t-comp-j2 & 21.40 & 27.58\\
+t-radical-j2 & 21.77 & 27.84\\
 \hline
 \end{tabular}
 \end{center}
@@ -31,17 +31,17 @@ target-radical-jion2 & 21.77 & 27.84\\
 This task is to solve the problem like form A is to B as C is to D, where D must be given by the models. We use the Chinese dataset introduced by Xinxiong Chen e tal. which consists of 3 analogy types: (1) capitals of countries (687 groups); (2) states/provinces of cities (175 groups); and (3) family words (240 groups). The learning corpus covers more than 97\% of all the testing words. 
 \begin{table}[h]
 \begin{center}
-\begin{tabular}{lrrrr}
-\hline \bf model-type & \bf Total, & \bf Capital, & \bf State, & \bf Family,\\ \hline
+\begin{tabular}{lcccc}
+\hline \bf model & \bf Total & \bf Capital & \bf State & \bf Family\\ \hline
 cbow & 61.29 & 66.91 & 73.71 & 39.33 \\
-context-component-jion1 & 41.28 & 42.84 & 53.14 & 29.78 \\   
-context-component-jion2 & 17.08 & 17.13 & 22.86 & 13.24 \\
-context-radical-jion1 & 68.32 & 72.71 & 88.00 & 47.43 \\
-context-radical-jion2 & 16.90 & 16.94 & 22.29 & 13.97 \\
-target-radical-jion1  & 67.62 & 70.61 & 90.86 & 45.22 \\
-target-component-jion1  & 68.50 & 73.70 & 91.42 & 40.80 \\
-target-component-jion2 & 17.08 & 17.13 & 22.86 & 13.24 \\
-target-radical-jion2 & 16.90 & 16.94 & 22.29 & 13.97 \\
+c-comp-j1 & 41.28 & 42.84 & 53.14 & 29.78 \\   
+c-comp-j2 & 17.08 & 17.13 & 22.86 & 13.24 \\
+c-radical-j1 & 68.32 & 72.71 & 88.00 & 47.43 \\
+c-radical-j2 & 16.90 & 16.94 & 22.29 & 13.97 \\
+t-radical-j1  & 67.62 & 70.61 & 90.86 & 45.22 \\
+t-comp-j1  & 68.50 & 73.70 & 91.42 & 40.80 \\
+t-comp-j2 & 17.08 & 17.13 & 22.86 & 13.24 \\
+t-radical-j2 & 16.90 & 16.94 & 22.29 & 13.97 \\
 \hline
 \end{tabular}
 \end{center}
