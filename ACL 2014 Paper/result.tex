@@ -1,6 +1,49 @@
-%!root = acl2014.tex
-Word Relatedness Computation
-In this task, we use two different datasets, wordsim-240 and wordsim-296 to evaluate the semantic relateness of word emmbeddings given by each model. The correlations between results of models and human judgements are reported as the model performance. 
+%!TEX root = acl2014.tex
+\section{Results}
+\subsection{Implementation details}
+For all experiments, for both our model and the baselines, we use the following parameters. we use vectors of dimension 200 and sample 10 negatives. The window size is set to 10, and the rejection threshold is 10−3. We only keep the words appearing no less that 5 times. The learning rate is set to ? for both our model and the CBOW, CWE-P baseline. Our model is implemented in C++.
+Using this setting on training data, our model with character and radicals/components is approximately 2× slower to train than the CBOW baseline (12k words/second/thread versus 20k words/second/thread for the baseline). 
+
+\subsection{Human similarity judgement} 
+In this task, we use two different chinese similarity datasets, wordsim-240 and wordsim-296, which are proposed py Xinxiong Chen e tal. In order to evaluate the semantic relateness of word emmbeddings given by each model, we cacluate Spearman’s rank correlation coeffi-cient (Spearman, 1904) between human judgement similarity and the cosine similarity of the vector representations.These correlations are reported as the model performance. 
 In wordsim-240, there are 240 pairs of Chinese words and human-labeled relatedness scores, of which the 233 word pairs have appeared in the learning corpus. In wordsim-296, the words in 280 word pairs have appeared in the learning corpus and the left 16 pairs have new words.
-We compute the Spearman correlation ρ between relatedness scores from a model and the human judgements for comparison. The evaluation results of our model and baseline methods on wordsim-240 and wordsim-296 are shown in Table 2
-Analogical Reasoning
+We compute the Spearman correlation ρ between relatedness scores from a model and the human judgements for comparison. The evaluation results of our model and baseline methods on wordsim-240 and wordsim-296 are shown in Table 1
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{lrr}
+\hline \bf model-type & \bf wordsim-240, & \bf wordsim-297, \\ \hline
+cbow & 50.88 & 61.87 \\
+context-component-jion1 & 55.44 & 57.70\\
+context-component-jion2 & 21.28 & 34.57 \\
+context-radical-jion1 & 54.37 & 64.75 \\
+context-radical-jion2 text & 23.82  & 34.40\\
+target-radical-jion1  & 54.70 & 63.09\\
+target-component-jion1  & 55.62 & 65.61\\
+target-component-jion2 & 21.40 & 27.58\\
+target-radical-jion2 & 21.77 & 27.84\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{font-table} Similarity results }
+\end{table}
+
+\subsection{Analogical Reasoning}
+This task is to solve the problem like form A is to B as C is to D, where D must be given by the models. We use the Chinese dataset introduced by Xinxiong Chen e tal. which consists of 3 analogy types: (1) capitals of countries (687 groups); (2) states/provinces of cities (175 groups); and (3) family words (240 groups). The learning corpus covers more than 97\% of all the testing words. 
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline \bf model-type & \bf Total, & \bf Capital, & \bf State, & \bf Family,\\ \hline
+cbow & 61.29 & 66.91 & 73.71 & 39.33 \\
+context-component-jion1 & 41.28 & 42.84 & 53.14 & 29.78 \\   
+context-component-jion2 & 17.08 & 17.13 & 22.86 & 13.24 \\
+context-radical-jion1 & 68.32 & 72.71 & 88.00 & 47.43 \\
+context-radical-jion2 & 16.90 & 16.94 & 22.29 & 13.97 \\
+target-radical-jion1  & 67.62 & 70.61 & 90.86 & 45.22 \\
+target-component-jion1  & 68.50 & 73.70 & 91.42 & 40.80 \\
+target-component-jion2 & 17.08 & 17.13 & 22.86 & 13.24 \\
+target-radical-jion2 & 16.90 & 16.94 & 22.29 & 13.97 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{font-table} Analogical results }
+\end{table}
