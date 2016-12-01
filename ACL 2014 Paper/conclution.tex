@@ -1,0 +1,5 @@
+%!TEX root = acl2014.tex
+\section{Conclution}
+In this work, we propsed a model to jointly learn chinese word, character, sub character embeddings. Our approach make full use of characters and finegrained sub characters information to enrich chinese word embeddings. Experiments show the benefit to incorporating finegrained components compared to just using radicals or characters. \\
+
+It seems that we have some errors in the implementation of JOIN2 method, we will fix it in the future. We also find that we may have a slit problem in the preprocessing of chinese wikipedia dump since the performance of CBOW in our experiment is slitly differment from that in a previous work that uses chinese wikipedia dump(And itt use windowsize 3 while CWE use windowsize 5 and people daily news as training corpus). We haven't made a good comparasion with all previous works. We will finish the experiment in the future.

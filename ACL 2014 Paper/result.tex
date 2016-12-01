@@ -1,0 +1,47 @@
+%!TEX root = acl2014.tex
+\section{Results}
+\subsection{Human similarity judgement} 
+In this task, we use two different chinese similarity datasets, wordsim-240 and wordsim-296, which are proposed py Xinxiong Chen e tal. In wordsim-240, there are 240 pairs of Chinese words and human-labeled relatedness scores, of which the 233 word pairs have appeared in the learning corpus. In wordsim-297, the words in 280 word pairs have appeared in the learning corpus and the left 16 pairs have new words.
+We compute the Spearman correlation ρ between relatedness scores from a model and the human judgements for comparison. The evaluation results of our model and baseline methods on wordsim-240 and wordsim-296 are shown in Table 1
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{lcc}
+\hline \bf model & \bf wordsim-240 & \bf wordsim-297 \\ \hline
+cbow & 50.88 & 61.87 \\
+c-comp-j1\footnotemark[1] & 55.44 & 57.70\\
+c-comp-j2 & 21.28 & 34.57 \\
+c-radi-j1 & 54.37 & 64.75 \\
+c-radi-j2 & 23.82  & 34.40\\
+t-radi-j1  & 54.70 & 63.09\\
+t-comp-j1  & 55.62 & 65.61\\
+t-comp-j2 & 21.40 & 27.58\\
+t-radi-j2 & 21.77 & 27.84\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{font-table} Similarity results }
+\end{table}
+From the results, we observe that: (1) Our models with jion type 1 compute the semantic relatedness of these word pairs much closer to human judgements. (2) The models use information of componant outperform the models using radicals. The reason is that, these components may contains more semantic information about the character. (3) The information of the character and components/radicals of the target word is more useful than those of the context. This can be explained that the influnce of the components mainly stays in the character level, will not influence the meaning of the surrounding words. The change of datasets does not cause significant change of correlations for both baselines and our methods.Our models compute the semantic relatedness of these word pairs much closer to human judgements.
+
+\subsection{Analogical Reasoning}
+In this task, we use the Chinese dataset introduced by Xinxiong Chen e tal. which consists of 1124 tuples of words and each tuple contains 4 words, coming from three different categories `Capital', `State' and `Family'. The words $w_i$ in each tuple $(w_1, w_2, w_3, w_4)$ in this dataset have the relationship that $w_2$ is to $w_1$ as $w_4$ is to $w_3$. The learning corpus covers more than 97\% of all the testing words. 
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{lcccc}
+\hline \bf model & \bf Total & \bf Capital & \bf State & \bf Family\\ \hline
+cbow & 61.29 & 66.91 & 73.71 & 39.33 \\
+c-comp-j1\footnotemark[1] & 41.28 & 42.84 & 53.14 & 29.78 \\   
+c-comp-j2 & 17.08 & 17.13 & 22.86 & 13.24 \\
+c-radi-j1 & 68.32 & 72.71 & 88.00 & 47.43 \\
+c-radi-j2 & 16.90 & 16.94 & 22.29 & 13.97 \\
+t-radi-j1  & 67.62 & 70.61 & 90.86 & 45.22 \\
+t-comp-j1  & 68.50 & 73.70 & 91.42 & 40.80 \\
+t-comp-j2 & 17.08 & 17.13 & 22.86 & 13.24 \\
+t-radi-j2 & 16.90 & 16.94 & 22.29 & 13.97 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{font-table} Analogical results }
+\end{table}
+From Table 2, we observe that: (1) Our models with jion type 1 and components information of the character in target word significantly outperform baseline methods. This indicates the necessity of considering character and components embeddings for word embeddings. However, it's also very important to consider the way to combine the information (2) This models can improve the embedding quality of all words, not only those words whose characters are considered for learning. For example, in the type of capitals of countries, all the words are entity names whose characters are not used for learning. Our model can still make an improvement on this type as compared to baseline models. (3) However, we also observe that the component of characters in surounding words may confuse the model, and lead to a bad result. And we think this is highly related to the origin construction of chinese characters and chinese words, that is components can have only local influnce, while characters may influnce the meaning of the surrounding words.
+\footnotetext[1]{c=context,t=target,comp=component,rad=radical}

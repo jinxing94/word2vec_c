@@ -1,0 +1,5 @@
+%!TEX root = acl2014.tex
+\section{Introduction}
+Word representation is an important work in natrual laguage processing. It aims to represent a word as a vector that can well catch both the semantic relateness and syntactic information of words. And it's fundamention of many NLP tasks works. 
+Recently, [Mikolov et al., 2013] proposed two efficient models, continuous bag-of-words model (CBOW) and Skip-Gram model, to learn word embeddings from a large unlabeled corpus. This method is now widely used in many NLP tasks. The CBOW model tries to combine the embeddings of context words to predict the target word; while SkipGram use the embedding of target word to predict its context words. 
+However, they just use the information of word in the model. In Chinese, the charaters in each word also influence the meaning of words. And the components and radicals of each charaters can also contribute to the meaning of the chrater and the word. Therefore, in this paper, we take Chinese as a example and propose a new model for learning character,radical/components and word embeddings, with the use of the contexts ,characters and radicals information.

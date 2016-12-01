@@ -1,0 +1,50 @@
+====baseline
+(677, 175, 272)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('capital total ', 677, ' in dict ', 677, ' correct ', 453) 0.66912850812407680945347119645495
+('state total ', 175, ' in dict ', 175, ' correct ', 129)   0.73714285714285714285714285714286
+('family total ', 272, ' in dict ', 272, ' correct ', 107)  0.39338235294117647058823529411765
+(' total ', 1124, ' indict ', 1124, ' correct ', 689)       0.6129893238434163701067615658363
+
+====CWE-p
+capital: 136/677, state: 42/175, family: 70/272
+
+====1
+(677, 175, 272)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('capital total ', 677, ' in dict ', 677, ' correct ', 290)
+('state total ', 175, ' in dict ', 175, ' correct ', 93)
+('family total ', 272, ' in dict ', 272, ' correct ', 81)
+(' total ', 1124, ' indict ', 1124, ' correct ', 464)
+
+====2
+(677, 175, 272)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('capital total ', 677, ' in dict ', 677, ' correct ', 116)
+('state total ', 175, ' in dict ', 175, ' correct ', 40)
+('family total ', 272, ' in dict ', 272, ' correct ', 36)
+(' total ', 1124, ' indict ', 1124, ' correct ', 192)
+
+====3
+(677, 175, 272)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('dictionary_lengh ', 653135)
+('capital total ', 677, ' in dict ', 677, ' correct ', 485)
+('state total ', 175, ' in dict ', 175, ' correct ', 154)
+('family total ', 272, ' in dict ', 272, ' correct ', 129)
+(' total ', 1124, ' indict ', 1124, ' correct ', 768)
+
+===4
+capital: 113/677, state: 39/175, family: 38/272
+===5
+capital: 478/677, state: 159/175, family: 123/272
+===6
+capital: 499/677, state: 160/175, family: 111/272
+
