@@ -559,33 +559,56 @@ void *TrainModelThread(void *id) {
         else
           g = (label - expTable[(int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;
         for (c = 0; c < layer1_size; c++){
-          neu1_grad[c] += g * syn1neg[c + l2] / cw;
-          neucomp_grad[c] += g * syn1neg[c + l2] / cw;
-          neuchar_grad[c] += g * syn1neg[c + l2] / cw;
+          neu1_grad[c] += g * syn1neg[c + l2];
+          neucomp_grad[c] += g * syn1neg[c + l2];
+          neuchar_grad[c] += g * syn1neg[c + l2];
         }
         for (c = 0; c < layer1_size; c++)
         syn1neg[c + l2] += g * (neu1[c] + neuchar[c] + neucomp[c]);
       }
     }
     // back propagate   hidden -> input
-    for(a = b; a < window * 2 + 1 - b; a++) if (a != window){
-      c = sentence_position - window + a;
-      if (c < 0) continue;
-      if (c >= sentence_length) continue;
-      last_word = sen[c];
-      if (last_word == -1) continue;
-      for (c = 0; c < layer1_size; c++)
-        syn0[c + last_word * layer1_size] += neu1_grad[c];
+    if(join_type == 1){
+      for(a = b; a < window * 2 + 1 - b; a++) if (a != window){
+        c = sentence_position - window + a;
+        if (c < 0) continue;
+        if (c >= sentence_length) continue;
+        last_word = sen[c];
+        if (last_word == -1) continue;
+        for (c = 0; c < layer1_size; c++)
+          syn0[c + last_word * layer1_size] += neu1_grad[c];
+      }
+      for(a = 0; a < char_list_cnt; a++){
+        char_id = char_id_list[a];
+        for(c = 0; c < layer1_size; c++)
+          synchar[c + char_id * layer1_size] += neuchar_grad[c];
+      }
+      for(a = 0; a < comp_list_cnt; a++){
+        comp_id = comp_id_list[a];
+        for(c = 0; c < layer1_size; c++)
+          syncomp[c + comp_id * layer1_size] += neucomp_grad[c];
+      }
     }
-    for(a = 0; a < char_list_cnt; a++){
-      char_id = char_id_list[a];
-      for(c = 0; c < layer1_size; c++)
-        synchar[c + char_id * layer1_size] += neuchar_grad[c];
-    }
-    for(a = 0; a < comp_list_cnt; a++){
-      comp_id = comp_id_list[a];
-      for(c = 0; c < layer1_size; c++)
-        syncomp[c + comp_id * layer1_size] += neucomp_grad[c];
+    else if(join_type == 2){    //back propagate hidden -> input   consider the average ratio
+      for(a = b; a < window * 2 + 1 - b; a++) if (a != window){
+        c = sentence_position - window + a;
+        if (c < 0) continue;
+        if (c >= sentence_length) continue;
+        last_word = sen[c];
+        if (last_word == -1) continue;
+        for(c = 0; c < layer1_size; c++)
+          syn0[c + last_word * layer1_size] += neu1_grad[c] / cw;
+        for (c = 0; c < vocab[last_word].character_size; c++) {
+          char_id = vocab[last_word].character[c];
+          for (d = 0; d < layer1_size; d++) 
+            synchar[d + char_id * layer1_size] += neuchar_grad[d] / cw / vocab[last_word].character_size;
+          for (d = 0; d < char2comp[char_id].comp_size; d++){
+            comp_id = char2comp[char_id].comp[d];
+            for (e = 0; e < layer1_size; e++)
+              syncomp[e + comp_id * layer1_size] += neucomp_grad[e] / cw / vocab[last_word].character_size / char2comp[char_id].comp_size;      
+          }
+        }
+      }
     }
     sentence_position++;
     if (sentence_position >= sentence_length){
