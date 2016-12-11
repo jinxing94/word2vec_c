@@ -648,14 +648,36 @@ void TrainModel(){
   }
   // save the word vectors
   fprintf(fo, "%lld %lld\n", vocab_size, layer1_size);
-  for (a = 0; a < vocab_size; a++) {
-    if (vocab[a].word != NULL)
-      fprintf(fo, "%s ", vocab[a].word);
-    if (binary)
-      for (b = 0; b < layer1_size; b++) fwrite(&syn0[a * layer1_size + b], sizeof(real), 1, fo);
-    else
-      for (b = 0; b < layer1_size; b++) fprintf(fo, "%lf ", syn0[a * layer1_size + b]);
-    fprintf(fo, "\n");
+  if(join_type == 1){
+    for (a = 0; a < vocab_size; a++) {
+      if (vocab[a].word != NULL)
+        fprintf(fo, "%s ", vocab[a].word);
+      if (binary)
+        for (b = 0; b < layer1_size; b++) fwrite(&syn0[a * layer1_size + b], sizeof(real), 1, fo);
+      else
+        for (b = 0; b < layer1_size; b++) fprintf(fo, "%lf ", syn0[a * layer1_size + b]);
+      fprintf(fo, "\n");
+    }
+  }
+  else if(join_type == 2){
+    for (a = 0; a < vocab_size; a++){
+      if (vocab[a].word != NULL)
+        fprintf(fo, "%s ", vocab[a].word);
+      for (c = 0; c < vocab[a].character_size; c++) {
+          int char_id = vocab[a].character[c];
+          for (d = 0; d < layer1_size; d++) syn0[a * layer1_size + d] += synchar[d + char_id * layer1_size] / vocab[a].character_size;
+          for (d = 0; d < char2comp[char_id].comp_size; d++){
+            int comp_id = char2comp[char_id].comp[d];
+            int e = 0;
+            for (e = 0; e < layer1_size; e++) syn0[a * layer1_size + e] += syncomp[e + comp_id * layer1_size] / char2comp[char_id].comp_size / vocab[a].character_size;
+          }
+      }
+      if (binary)
+        for (b = 0; b < layer1_size; b++) fwrite(&syn0[a * layer1_size + b], sizeof(real), 1, fo);
+      else
+        for (b = 0; b < layer1_size; b++) fprintf(fo, "%lf ", syn0[a * layer1_size + b]);
+      fprintf(fo, "\n");
+    }
   }
   fclose(fo);
   free(table);
