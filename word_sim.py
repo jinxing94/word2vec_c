@@ -5,6 +5,7 @@ Select 240.txt 297.txt
 '''
 import numpy as np
 import pdb
+import sys,getopt
 from scipy.stats import spearmanr
 def build_dictionary(word_list):
         dictionary = dict()
@@ -49,8 +50,21 @@ def read_vectors(vec_file):
         return word_size, embed_dim, dict_word, embeddings
 if  __name__ == '__main__':
         fname1 = 'evaluation/297.txt'
-        pairs = read_wordpair(fname1)
         vec_file = 'bin/zh_wiki_bin.txt'
+        try:
+                opts, args = getopt.getopt(sys.argv[1:],"hs:e:",["similarity_file=","embed_file="])
+        except getopt.GetoptError:
+                print ('word_analogy.py -s <similarity_file> -e <embed_file>')
+                sys.exit(2)
+        for opt, arg in opts:
+                if opt == '-h':
+                        print ('word_sim.py -a <similarity_file> -e <embed_file>')
+                        sys.exit()
+                elif opt in ("-s", "--similarity_file"):
+                        fname1 = arg
+                elif opt in ("-e", "--embed_file"):
+                        vec_file = arg
+        pairs = read_wordpair(fname1)
         word_size, embed_dim, dict_word, embeddings = read_vectors(vec_file)
         human_sim = []
         vec_sim = []
