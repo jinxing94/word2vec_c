@@ -48,7 +48,7 @@ char train_file[MAX_STRING], output_file[MAX_STRING], comp_file[MAX_STRING],char
 struct vocab_word *vocab;
 struct char_component char2comp[CHAR_SIZE];
 struct components *comp_array;
-int binary = 0, cbow = 0, debug_mode = 2, window = 5, min_count = 5, num_threads = 1, min_reduce = 1;
+int binary = 0, cbow = 0, debug_mode = 2, window = 5, min_count = 5, iter = 5, num_threads = 1, min_reduce = 1;
 int join_type = 1;   // 1 :  sum loss  2  : sum context   
 int *vocab_hash;
 long long vocab_max_size = 1000, vocab_size = 0, comp_max_size = COMP_SIZE, comp_size = 0, layer1_size = 200;
@@ -381,7 +381,7 @@ void DestroyNet(){
 void *TrainModelThread(void *id) {
   long long a, b, c, d, e, char_id, comp_id, word, last_word, sentence_length = 0, sentence_position = 0;
   long long word_count = 0, last_word_count = 0, sen[MAX_SENTENCE_LENGTH + 1];
-  long long l1, l2,  target, label;
+  long long l1, l2,  target, label, local_iter = iter;
   long long *char_id_list = calloc(MAX_SENTENCE_LENGTH, sizeof(long long));
   long long *comp_id_list = calloc(MAX_SENTENCE_LENGTH, sizeof(long long));
   int char_list_cnt = 0, comp_list_cnt = 0;
@@ -407,11 +407,11 @@ void *TrainModelThread(void *id) {
       if ((debug_mode > 1)) {
         now=clock();
         printf("%cAlpha: %f  Progress: %.2f%%  Words/thread/sec: %.2fk  ", 13, alpha,
-           word_count_actual / (real)(train_words + 1) * 100,
+           word_count_actual / (real)(iter * train_words + 1) * 100,
            word_count_actual / ((real)(now - start + 1) / (real)CLOCKS_PER_SEC * 1000));
         fflush(stdout);
       }
-      alpha = starting_alpha * (1 - word_count_actual / (real)(train_words + 1));
+      alpha = starting_alpha * (1 - word_count_actual / (real)(iter * train_words + 1));
       if (alpha < starting_alpha * 0.0001) alpha = starting_alpha * 0.0001;
     }
     // read a word sentence 
@@ -434,8 +434,18 @@ void *TrainModelThread(void *id) {
       }
       sentence_position = 0;
     }
-    if (feof(fi)) break;
-    if (word_count > train_words / num_threads) break;
+    //if (feof(fi)) break;
+    //if (word_count > train_words / num_threads) break;
+    if (feof(fi) || (word_count > train_words / num_threads)) {
+      word_count_actual += word_count - last_word_count;
+      local_iter--;
+      if (local_iter == 0) break;
+      word_count = 0;
+      last_word_count = 0;
+      sentence_length = 0;
+      fseek(fi, file_size / (long long)num_threads * (long long)id, SEEK_SET);
+      continue;
+    }
     word = sen[sentence_position];
     if (word == -1) continue;
     // train the cbow model
@@ -653,6 +663,8 @@ int main(int argc, char **argv) {
       printf(" in the training data will be randomly down-sampled; default is 0 (off), useful value is 1e-5\n");
       printf("\t-negative <int>\n");
       printf("\t\tNumber of negative examples; default is 0, common values are 5 - 10 (0 = not used)\n");
+      printf("\t-iter <int>\n");
+      printf("\t\tRun more training iterations (default 5)\n");
       printf("\t-threads <int>\n");
       printf("\t\tUse <int> threads (default 1)\n");
       printf("\t-min-count <int>\n");
@@ -686,6 +698,7 @@ int main(int argc, char **argv) {
   if ((i = ArgPos((char *)"-sample", argc, argv)) > 0) sample = atof(argv[i + 1]);
   if ((i = ArgPos((char *)"-negative", argc, argv)) > 0) negative = atoi(argv[i + 1]);
   if ((i = ArgPos((char *)"-threads", argc, argv)) > 0) num_threads = atoi(argv[i + 1]);
+  if ((i = ArgPos((char *)"-iter", argc, argv)) > 0) iter = atoi(argv[i + 1]);
   if ((i = ArgPos((char *)"-min-count", argc, argv)) > 0) min_count = atoi(argv[i + 1]);
   if ((i = ArgPos((char *)"-join-type", argc, argv)) > 0) join_type = atoi(argv[i + 1]);
   vocab = (struct vocab_word *)calloc(vocab_max_size, sizeof(struct vocab_word));
